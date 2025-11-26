@@ -2,17 +2,31 @@
   "name": "travel-log-v2",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@10.12.1+sha1.4bd977ce548dc9fcd1ca0c62838c55646cea6847",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky"
   },
   "dependencies": {
+    "@nuxt/eslint": "1.10.0",
+    "eslint": "^9.39.1",
     "nuxt": "^4.2.1",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
   },
-  "packageManager": "pnpm@10.12.1+sha1.4bd977ce548dc9fcd1ca0c62838c55646cea6847"
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.2.0",
+    "eslint-plugin-format": "^1.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  },
+  "lint-staged": {
+    "*": "pnpm lint"
+  }
 }
