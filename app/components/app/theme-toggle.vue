@@ -13,7 +13,7 @@ const isDark = computed({
 
 <template>
   <UButton
-    :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'" color="neutral" variant="ghost"
+    :icon="isDark ? 'tabler:sun' : 'tabler:moon-filled'" color="neutral" variant="ghost"
     :aria-label="`Switch to ${isDark ? 'light' : 'dark'} mode`" @click="isDark = !isDark"
   />
 </template>
