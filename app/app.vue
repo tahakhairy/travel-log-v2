@@ -4,6 +4,8 @@
 
 <template>
   <UApp>
-    <ThemeToggle />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </UApp>
 </template>
