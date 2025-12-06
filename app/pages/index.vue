@@ -9,9 +9,7 @@
           Keep track of your travels and adventures with this simple travel log app. Add locations, photos, and notes to
           create a digital journal of your journeys
         </p>
-        <!-- <AuthButton v-if="!user" /> -->
-
-        <UButton label="Sign In With Github" trailing-icon="tabler:brand-github" />
+        <AuthButton />
       </div>
     </div>
   </UContainer>

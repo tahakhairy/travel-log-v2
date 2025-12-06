@@ -1,5 +1,5 @@
 CREATE TABLE `account` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`account_id` text NOT NULL,
 	`provider_id` text NOT NULL,
 	`user_id` text NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `account` (
 --> statement-breakpoint
 CREATE INDEX `account_userId_idx` ON `account` (`user_id`);--> statement-breakpoint
 CREATE TABLE `session` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`expires_at` integer NOT NULL,
 	`token` text NOT NULL,
 	`created_at` integer DEFAULT (cast(unixepoch('subsecond') * 1000 as integer)) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `session` (
 CREATE UNIQUE INDEX `session_token_unique` ON `session` (`token`);--> statement-breakpoint
 CREATE INDEX `session_userId_idx` ON `session` (`user_id`);--> statement-breakpoint
 CREATE TABLE `user` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
 	`email` text NOT NULL,
 	`email_verified` integer DEFAULT false NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `user` (
 --> statement-breakpoint
 CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint
 CREATE TABLE `verification` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`identifier` text NOT NULL,
 	`value` text NOT NULL,
 	`expires_at` integer NOT NULL,
@@ -51,6 +51,43 @@ CREATE TABLE `verification` (
 );
 --> statement-breakpoint
 CREATE INDEX `verification_identifier_idx` ON `verification` (`identifier`);--> statement-breakpoint
-ALTER TABLE `location` ADD `user_id` integer NOT NULL REFERENCES user(id);--> statement-breakpoint
-ALTER TABLE `locationLog` ADD `user_id` integer NOT NULL REFERENCES user(id);--> statement-breakpoint
-ALTER TABLE `locationLogImage` ADD `user_id` integer NOT NULL REFERENCES user(id);
+CREATE TABLE `location` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text NOT NULL,
+	`slug` text NOT NULL,
+	`description` text,
+	`lat` real NOT NULL,
+	`long` real NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `location_slug_unique` ON `location` (`slug`);--> statement-breakpoint
+CREATE TABLE `locationLog` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`name` text NOT NULL,
+	`description` text,
+	`started_at` integer NOT NULL,
+	`ended_at` integer NOT NULL,
+	`lat` real NOT NULL,
+	`long` real NOT NULL,
+	`user_id` integer NOT NULL,
+	`location_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `locationLogImage` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`key` text NOT NULL,
+	`location_log_id` integer NOT NULL,
+	`user_id` integer NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL,
+	FOREIGN KEY (`location_log_id`) REFERENCES `locationLog`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);

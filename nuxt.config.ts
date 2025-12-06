@@ -5,7 +5,7 @@ import "./app/utils/env";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxtjs/color-mode", "@nuxt/icon"],
+  modules: ["@nuxt/eslint", "@nuxt/ui", "@nuxtjs/color-mode", "@nuxt/icon", "@pinia/nuxt"],
   css: ["./app/assets/css/main.css"],
   vite: {
     plugins: [

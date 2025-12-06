@@ -9,8 +9,7 @@
           <AppThemeToggle />
         </ClientOnly>
 
-        <UButton label="Sign In With Github" trailing-icon="tabler:brand-github" />
-        <!-- <AuthButton /> -->
+        <AuthButton />
       </div>
     </div>
   </div>
