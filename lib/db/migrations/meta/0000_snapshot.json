@@ -1,18 +1,18 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "aa2991c2-0484-42d2-b6b6-a26ef3600c8c",
-  "prevId": "259c1c95-7d8c-43b0-b1a1-f199373a4799",
+  "id": "e029f7be-a839-42b0-876c-6beb8413b95c",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
       "name": "account",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "account_id": {
           "name": "account_id",
@@ -133,10 +133,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "expires_at": {
           "name": "expires_at",
@@ -229,10 +229,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "name": {
           "name": "name",
@@ -299,10 +299,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "identifier": {
           "name": "identifier",
