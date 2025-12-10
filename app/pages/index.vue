@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const { user } = storeToRefs(useAuthStore());
+</script>
+
 <template>
   <UContainer class="rounded-2xl bg-primary-100/80 dark:bg-slate-700 container mx-auto">
     <div class="text-center min-h-96 flex justify-center items-center text-default">
@@ -9,7 +13,8 @@
           Keep track of your travels and adventures with this simple travel log app. Add locations, photos, and notes to
           create a digital journal of your journeys
         </p>
-        <AuthButton />
+        <AuthButton v-if="!user" />
+        <UButton v-else to="/dashboard" label="Start Logging" />
       </div>
     </div>
   </UContainer>
