@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const { isLoading, user } = storeToRefs(useAuthStore());
-const { signIn } = useAuthStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
   <UDropdownMenu
-    v-if="!isLoading && user"
+    v-if="!authStore.isLoading && authStore.user"
     size="lg"
     :items="[{
       label: 'Sign Out',
@@ -16,15 +15,15 @@ const { signIn } = useAuthStore();
     }]"
   >
     <UButton
-      :label="`${user.name}`"
+      :label="`${authStore.user.name}`"
       color="neutral"
       variant="outline"
     >
       <template #leading>
         <UAvatar
-          v-if="user.image"
+          v-if="authStore.user.image"
           size="md"
-          :src="user.image"
+          :src="authStore.user.image"
         />
       </template>
     </UButton>
@@ -39,7 +38,7 @@ const { signIn } = useAuthStore();
   </UDropdownMenu>
   <UButton
     v-else
-    :loading="isLoading" :disabled="isLoading" label="Sign In With Github" trailing-icon="tabler:brand-github"
-    @click="signIn"
+    :loading="authStore.isLoading" :disabled="authStore.isLoading" label="Sign In With Github" trailing-icon="tabler:brand-github"
+    @click="authStore.signIn"
   />
 </template>
