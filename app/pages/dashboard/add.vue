@@ -39,7 +39,7 @@ async function onSubmit() {
 
     toast.add({
       color: "error",
-      title: "Error",
+      title: "Oops!",
       description: serverError.statusMessage || "An unknown error occurred.",
     });
   }

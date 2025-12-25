@@ -1,5 +1,10 @@
+import type { DrizzleError } from "drizzle-orm";
+
 import db from "~~/lib/db";
 import { insertLocationSchema, location } from "~~/lib/db/shcema";
+import { and, eq } from "drizzle-orm";
+import { customAlphabet } from "nanoid";
+import slugify from "slug";
 
 export default defineEventHandler(async (event) => {
   if (!event.context.user) {
@@ -27,11 +32,52 @@ export default defineEventHandler(async (event) => {
     }));
   }
 
-  const [created] = await db.insert(location).values({
-    ...result.data,
-    slug: result.data.name.replaceAll(" ", "-").toLowerCase(),
-    userId: event.context.user.id,
-  }).returning();
+  const existingLocation = await db.query.location.findFirst({
+    where: and(
+      eq(location.name, result.data.name),
+      eq(location.userId, event.context.user.id),
+    ),
+    columns: { id: true },
+  });
 
-  return created;
+  if (existingLocation) {
+    return sendError(event, createError({
+      statusCode: 409,
+      statusMessage: "A location with that name already exists.",
+    }));
+  }
+
+  let slug = slugify(result.data.name);
+  let existing = await db.query.location.findFirst({
+    where: eq(location.slug, slug),
+    columns: { id: true },
+  });
+
+  while (existing) {
+    const suffix = customAlphabet("123456789abcdefghijklmnopqrstuvwxyz", 5)();
+    slug = `${slug}-${suffix}`;
+
+    existing = await db.query.location.findFirst({
+      where: eq(location.slug, slug),
+      columns: { id: true },
+    });
+  }
+
+  try {
+    const [created] = await db.insert(location).values({
+      ...result.data,
+      slug,
+      userId: event.context.user.id,
+    }).returning();
+
+    return created;
+  }
+  catch (e) {
+    const error = e as DrizzleError;
+
+    return sendError(event, createError({
+      statusCode: 409,
+      statusMessage: error.message,
+    }));
+  }
 });
