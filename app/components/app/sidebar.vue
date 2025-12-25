@@ -69,9 +69,11 @@ function toggleSidebar() {
             :icon="btn.icon"
             size="xl"
           >
-            <span v-if="isSidebarOpen" class="text-nowrap">
-              {{ btn.label }}
-            </span>
+            <Transition name="grow">
+              <span v-if="isSidebarOpen" class="text-nowrap">
+                {{ btn.label }}
+              </span>
+            </Transition>
           </UButton>
         </UTooltip>
         <USeparator
@@ -93,12 +95,14 @@ function toggleSidebar() {
   animation: grow 0.1s reverse;
 }
 
-/* @keyframes grow {
+@keyframes grow {
   0% {
+    opacity: 0;
     transform: scale(0);
   }
   100% {
+    opacity: 1;
     transform: scale(1);
   }
-} */
+}
 </style>
